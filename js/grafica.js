@@ -35,62 +35,190 @@
 });
  */
 
-class WebsocketService {
-    constructor(url) {
-        this.socket = new WebSocket(url);
-        this.socketStatus = false;
 
-        // Agrega código para inicializar la gráfica
-        this.initChart();
+/*const endpoint = 'https://cloudiqinnovations.link/api/v1/sufragios';
 
-        this.socket.addEventListener('open', () => {
-            console.log("WebSocket Connected");
-            this.socketStatus = true;
-            this.updateChart();
-        });
-
-        this.socket.addEventListener('close', () => {
-            console.log("WebSocket Disconnected");
-            this.socketStatus = false;
-            this.updateChart();
-        });
+fetch(endpoint)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Error de red: ${response.status}`);
     }
+    return response.json();
+  })
+  .then(data => {
+    // Llamada a la función para crear el gráfico
+    createChart(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 
-    initChart() {
-        const ctx = document.getElementById('websocketChart').getContext('2d');
-        this.chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'WebSocket Status',
-                    data: [],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2,
-                    fill: false,
-                }],
-            },
-            options: {
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom',
-                    },
-                    y: {
-                        max: 1,
-                        min: 0,
-                    },
-                },
-            },
-        });
-    }
 
-    updateChart() {
-        // Actualiza la gráfica con el estado actual del socket
-        this.chart.data.labels.push(new Date().toLocaleTimeString());
-        this.chart.data.datasets[0].data.push(this.socketStatus ? 1 : 0);
-        this.chart.update();
-    }
+  //VOTOS POR PARTIDO
+ function createChart(data) {
+  // Extraer datos relevantes para el gráfico
+  const partidos = data.map(partido => partido.nombre);
+  const counts = data.map(partido => partido._count);
 
-    // Resto del código...
+  // Calcular el total de votos
+  const totalVotos = counts.reduce((acc, count) => acc + count, 0);
+
+  // Especificar una paleta de colores personalizada
+  const coloresPersonalizados = ['#ff3333', '#339cff', '#33ff5c'];
+
+  // Configuración del gráfico de pastel
+  const chartOptions = {
+    chart: {
+      type: 'pie'
+    },
+    title: {
+      text: ``
+      
+    },
+    series: [{
+      name: 'Sufragios',
+      data: partidos.map((partido, index) => ({
+        name: partido,
+        y: counts[index],
+        color: coloresPersonalizados[index % coloresPersonalizados.length] // Ciclo de colores si hay más partidos que colores
+      })),
+      showInLegend: true
+    }],
+    colors: coloresPersonalizados // Utilizar la paleta de colores para el gráfico
+  };
+
+  // Crear el gráfico
+  Highcharts.chart('myChart', chartOptions);
+} */
+
+const endpoint = 'https://cloudiqinnovations.link/api/v1/sufragios';
+
+fetch(endpoint)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error de red: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Llamada a la función para crear el gráfico
+        createChart(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    function createChart(data) {
+    // Extraer datos relevantes para el gráfico
+    const partidos = data.map(partido => partido.nombre);
+    const counts = data.map(partido => partido._count);
+
+    // Calcular el total de votos
+    const totalVotos = counts.reduce((acc, count) => acc + count, 0);
+
+    // Filtrar datos por género (masculino)
+    const dataMasculino = data.map(partido => partido.masculino);
+    // Filtrar datos por género (femenino)
+    const dataFemenino = data.map(partido => partido.femenino);
+    const departamentosData = data.map(partido => partido.departamento || []);
+    const departamentos = [...new Set(departamentosData.flatMap(dep => dep.map(d => d.nombre)))];
+
+
+    // Especificar una paleta de colores personalizada
+    const coloresPersonalizados = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#33FFFF', '#FF33FF'];
+
+     // Configuración del gráfico de pastel para datos masculinos
+     const chartOptions = {
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: ``
+          
+        },
+        series: [{
+          name: 'Sufragios',
+          data: partidos.map((partido, index) => ({
+            name: partido,
+            y: counts[index],
+            color: coloresPersonalizados[index % coloresPersonalizados.length] // Ciclo de colores si hay más partidos que colores
+          })),
+          showInLegend: true
+        }],
+        colors: coloresPersonalizados // Utilizar la paleta de colores para el gráfico
+      };
+
+    // Configuración del gráfico de pastel para datos masculinos
+    const chartOptionsMasculino = {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Distribución por género (Masculino)'
+        },
+        series: [{
+            name: 'Sufragios',
+            data: partidos.map((partido, index) => ({
+                name: `${partido} (${dataMasculino[index]})`,
+                y: dataMasculino[index],
+                color: coloresPersonalizados[index % coloresPersonalizados.length]
+            })),
+            showInLegend: true
+        }],
+        colors: coloresPersonalizados
+    };
+
+    // Configuración del gráfico de pastel para datos femeninos
+    const chartOptionsFemenino = {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Distribución por género (Femenino)'
+        },
+        series: [{
+            name: 'Sufragios',
+            data: partidos.map((partido, index) => ({
+                name: `${partido} (${dataFemenino[index]})`,
+                y: dataFemenino[index],
+                color: coloresPersonalizados[index % coloresPersonalizados.length]
+            })),
+            showInLegend: true
+        }],
+        colors: coloresPersonalizados
+    };
+
+    //GRAFICO POR DEPARTAMENTO
+    const chartOptionsDepartamento = {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Conteo de Votos por Departamento'
+        },
+        xAxis: {
+            categories: departamentos
+        },
+        yAxis: {
+            title: {
+                text: 'Número de Votos'
+            }
+        },
+        series: partidos.map((partido, index) => ({
+            name: partido,
+            data: departamentos.map(depto => {
+                const departamentoPartido = departamentosData.find(dp => dp.find(d => d.nombre === depto && partido === d.nombre));
+                return departamentoPartido ? departamentoPartido.find(d => d.nombre === depto)._count : 0;
+            }),
+            color: coloresPersonalizados[index % coloresPersonalizados.length]
+        })),
+        colors: coloresPersonalizados
+    };
+
+    // Crear los gráficos
+    Highcharts.chart('myChart', chartOptions);
+    Highcharts.chart('chartMasculino', chartOptionsMasculino);
+    Highcharts.chart('chartFemenino', chartOptionsFemenino);
+    Highcharts.chart('votosPorDepartamentoChart', chartOptionsDepartamento);
 }
+

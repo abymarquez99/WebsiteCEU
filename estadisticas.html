@@ -32,7 +32,7 @@
     <script src="js/dark-mode.js"></script>
     <script src="js/grafica.js"></script>
     <!-- Desde CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 
 
 </head>
@@ -127,10 +127,10 @@
                     <h1 class="display-5 mb-5">ESTADISTICAS</h1>
                 </div>
                 <section id="registro-electoral-departamental" class="my-5">
-                    <h2 class="my-5 text-center">Estadísticas del registro electoral a nivel nacional</h2>
+                    <h2 class="my-5 text-center">Votos por Partido</h2>
                     <div class="row">
                       <div class="col-lg-12">
-                        <canvas id="websocketChart" width="400" height="200"></canvas>
+                        <div id="myChart" style="height: 400px;"></div>
 
                       </div>
                     </div>
@@ -142,22 +142,35 @@
                     <div class="row">
                 
                       <div class="col-lg-8">
-                        <div id="genero-porcentaje-nacional"></div>
+                        <div id="chartMasculino" style="height: 400px;"></div>
+                        <div id="chartFemenino" style="height: 400px;"></div>
                       </div>
                       <div class="col-lg text-center">
                 
                         <div class="display-4 py-5">
+                            <div class="display-4 text-secondary">Hombres</div>
+                          <div class="count-outer count-box">
+                            <span class="count-text font-weight-bolder" data-speed="3000" data-stop="2951035">0</span><span></span>
+                          </div>
                           <div class="display-4 text-secondary">Mujeres</div>
                           <div class="count-outer count-box">
                             <span class="count-text font-weight-bolder" data-speed="3000" data-stop="3251745">0</span><span></span>
                           </div>
                           <br>
-                          <div class="display-4 text-secondary">Hombres</div>
-                          <div class="count-outer count-box">
-                            <span class="count-text font-weight-bolder" data-speed="3000" data-stop="2951035">0</span><span></span>
-                          </div>
+                          
                         </div>
                 
+                      </div>
+                    </div>
+                
+                  </section>
+
+                  <section id="registro-electoral-departamental" class="my-5">
+                    <h2 class="my-5 text-center">Votos por Departamento</h2>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div id="votosPorDepartamentoChart" style="height: 400px;"></div>
+
                       </div>
                     </div>
                 
