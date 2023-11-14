@@ -204,7 +204,7 @@ h6,
 }
 
 .page-header {
-    padding-top: 12rem;
+    padding-top: 17rem;
     padding-bottom: 6rem;
     background: url(../img/institucion.png) top left no-repeat;
     background-size: cover;
@@ -212,7 +212,8 @@ h6,
 
 .page-header .breadcrumb-item,
 .page-header .breadcrumb-item a {
-    font-weight: 500;
+    font-weight: 700;
+    font-size: 25px;
 }
 
 .page-header .breadcrumb-item+.breadcrumb-item::before {

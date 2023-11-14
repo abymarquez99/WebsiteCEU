@@ -108,29 +108,45 @@ fetch(endpoint)
         console.error('Error:', error);
     });
 
+    
+
     function createChart(data) {
+        console.log(data)
     // Extraer datos relevantes para el gráfico
     const partidos = data.map(partido => partido.nombre);
+    console.log(partidos)
+    
     const counts = data.map(partido => partido._count);
 
     // Calcular el total de votos
     const totalVotos = counts.reduce((acc, count) => acc + count, 0);
 
     // Filtrar datos por género (masculino)
-    const dataMasculino = data.map(partido => partido.masculino);
+    const dataMasculino = data.map(partido => partido.genero.masculino);
+    console.log(dataMasculino)
     // Filtrar datos por género (femenino)
-    const dataFemenino = data.map(partido => partido.femenino);
+    const dataFemenino = data.map(partido => partido.genero.femenino);
+   
     const departamentosData = data.map(partido => partido.departamento || []);
+    console.log(departamentosData)
+
+   
     const departamentos = [...new Set(departamentosData.flatMap(dep => dep.map(d => d.nombre)))];
+    console.log(departamentos)  
+    // Acceder a la propiedad 'count' de cada departamento
+    const countsPorDepartamento = departamentosData.map(dep => dep.map(d => d._count));
+    console.log(countsPorDepartamento);
 
 
     // Especificar una paleta de colores personalizada
     const coloresPersonalizados = ['#FF5733', '#33FF57', '#5733FF', '#FFFF33', '#33FFFF', '#FF33FF'];
 
-     // Configuración del gráfico de pastel para datos masculinos
+    // Configuración del gráfico de pastel para datos masculinos
      const chartOptions = {
         chart: {
-          type: 'pie'
+          type: 'pie',
+          backgroundColor:'transparent',
+          color: 'white'
         },
         title: {
           text: ``
@@ -188,37 +204,49 @@ fetch(endpoint)
         colors: coloresPersonalizados
     };
 
-    //GRAFICO POR DEPARTAMENTO
-    const chartOptionsDepartamento = {
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: 'Conteo de Votos por Departamento'
-        },
-        xAxis: {
-            categories: departamentos
-        },
-        yAxis: {
-            title: {
-                text: 'Número de Votos'
-            }
-        },
-        series: partidos.map((partido, index) => ({
-            name: partido,
-            data: departamentos.map(depto => {
-                const departamentoPartido = departamentosData.find(dp => dp.find(d => d.nombre === depto && partido === d.nombre));
-                return departamentoPartido ? departamentoPartido.find(d => d.nombre === depto)._count : 0;
-            }),
-            color: coloresPersonalizados[index % coloresPersonalizados.length]
-        })),
-        colors: coloresPersonalizados
-    };
+   
+    // Configurar el gráfico con Highcharts
+    Highcharts.chart('votosPorDepartamentoChart', {
+    chart: {
+      type: 'bar' // Puedes ajustar el tipo de gráfico según tus necesidades
+    },
+    title: {
+      text: 'Recuento por Departamento'
+    },
+    xAxis: {
+      categories: departamentos,
+      title: {
+        text: 'Departamento'
+      }
+    },
+    yAxis: {
+      title: {
+        text: 'Count'
+      }
+    },
+    colors: coloresPersonalizados, // Proporcionar colores
+    series: [{
+      name: 'Count',
+      data: countsPorDepartamento,
+      
+    }]
+  });
+
+
 
     // Crear los gráficos
     Highcharts.chart('myChart', chartOptions);
     Highcharts.chart('chartMasculino', chartOptionsMasculino);
     Highcharts.chart('chartFemenino', chartOptionsFemenino);
-    Highcharts.chart('votosPorDepartamentoChart', chartOptionsDepartamento);
+   
 }
+
+// Llamar a la función inicialmente
+CreateChart();
+
+// Configurar la actualización cada minuto
+setInterval(() => {
+    CreateChart();
+}, 60000); // 60000 milisegundos = 1 minuto
+
 
