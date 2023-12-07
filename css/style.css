@@ -260,21 +260,21 @@ h6,
 }
 
 
-/*** Service ***/
-.service .nav .nav-link {
+/*** partidosPoliticos ***/
+.partidosPoliticos .nav .nav-link {
     transition: .5s;
 }
 
-.service .nav .nav-link.active {
+.partidosPoliticos .nav .nav-link.active {
     border-color: var(--primary) !important;
     background: var(--primary);
 }
 
-.service .nav .nav-link.active h5 {
+.partidosPoliticos .nav .nav-link.active h5 {
     color: #FFFFFF !important;
 }
 
-.service .nav .nav-link.active h5 i {
+.partidosPoliticos .nav .nav-link.active h5 i {
     color: #FFFFFF !important;
 }
 
@@ -607,4 +607,19 @@ h6,
 
 .dark-mode .carousel-caption h1{
     color: #011A41;
+}
+
+.responsive-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* Esto mantiene una proporción de 16:9 para el iframe */
+}
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }

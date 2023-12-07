@@ -1,3 +1,4 @@
+
 (function ($) {
     "use strict";
 
@@ -10,8 +11,8 @@
         }, 1);
     };
     spinner();
-    
-    
+
+
     // Initiate the wowjs
     new WOW().init();
 
@@ -32,8 +33,8 @@
             }
         }
     });
-    
-    
+
+
     // Back to top button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300) {
@@ -43,7 +44,7 @@
         }
     });
     $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        $('html, body').animate({ scrollTop: 0 }, 1500, 'easeInOutExpo');
         return false;
     });
 
@@ -64,22 +65,22 @@
         center: true,
         dots: false,
         nav: true,
-        navText : [
+        navText: [
             '<i class="bi bi-chevron-left"></i>',
             '<i class="bi bi-chevron-right"></i>'
         ],
         responsive: {
-			0:{
-                items:1
+            0: {
+                items: 1
             },
-            576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:2
+            768: {
+                items: 2
             },
-            992:{
-                items:3
+            992: {
+                items: 3
             }
         }
     });
@@ -93,24 +94,24 @@
         margin: 24,
         dots: true,
         loop: true,
-        nav : false,
+        nav: false,
         responsive: {
-            0:{
-                items:1
+            0: {
+                items: 1
             },
-			576:{
-                items:1
+            576: {
+                items: 1
             },
-            768:{
-                items:2
+            768: {
+                items: 2
             },
-            992:{
-                items:3
+            992: {
+                items: 3
             }
         }
     });
 
-    
+
 })(jQuery);
 
 
@@ -118,27 +119,27 @@
 function countdownTo(targetDate) {
     const targetTime = new Date(targetDate).getTime();
     const countdownElement = document.getElementById("countdown");
-  
+
     function updateCountdown() {
         const currentTime = new Date().getTime();
         const timeRemaining = targetTime - currentTime;
-  
+
         if (timeRemaining <= 0) {
             countdownElement.innerHTML = "¡La fecha objetivo ha llegado!";
             clearInterval(interval);
         } else {
             const daysRemaining = Math.ceil(timeRemaining / (1000 * 60 * 60 * 24));
-            countdownElement.innerHTML =  daysRemaining;
+            countdownElement.innerHTML = daysRemaining;
         }
     }
-  
+
     // Actualiza el contador inicialmente y luego cada segundo
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
-  }
-  
-  // Define la fecha objetivo (4 de febrero de 2024)
-  const targetDate = "2023-11-19";
-  
-  // Llama a la función de cuenta regresiva
-  countdownTo(targetDate);
+}
+
+// Define la fecha objetivo (4 de febrero de 2024)
+const targetDate = "2023-11-19";
+
+// Llama a la función de cuenta regresiva
+countdownTo(targetDate);

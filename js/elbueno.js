@@ -1,14 +1,10 @@
-setInterval(function () {         // Recargar la página         
-  location.reload();
-}, 10000); // 5000 
-
 // URL del endpoint
 const endpointUrl = 'https://cloudiqinnovations.link/api/v1/sufragios';
 let totalVotos = 0;
 // Obtener datos del endpoint
 
 
-
+function obtenerYActualizarDatos() {
 fetch(endpointUrl)
     .then(response => {
         if (!response.ok) {
@@ -67,9 +63,7 @@ fetch(endpointUrl)
                     backgroundColor: ['blue', 'pink']
                 }]
             }
-            
         });
-        
         // Sumar los votos de todos los partidos
         const nuevoTotalVotos = data.reduce((total, partido) => total + partido._count, 0);
 
@@ -77,7 +71,7 @@ fetch(endpointUrl)
         const votosNuevos = nuevoTotalVotos - totalVotos;
 
         // Actualizar el contador de votos en general
-        document.getElementById('contadorVotos').textContent = ` ${nuevoTotalVotos}`;
+        document.getElementById('contadorVotos').textContent = `Votos en general: ${nuevoTotalVotos}`;
 
         // Actualizar la variable totalVotos
         totalVotos = nuevoTotalVotos;
@@ -86,5 +80,10 @@ fetch(endpointUrl)
     .catch(error => {
         console.error('Error al obtener datos del endpoint:', error);
     }); 
-  
+  }
 
+  // Llamar a la función inicialmente
+  obtenerYActualizarDatos();
+  
+  // Actualizar cada minuto
+  setInterval(obtenerYActualizarDatos, 60000); 
